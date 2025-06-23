@@ -1,14 +1,12 @@
 // src/worker.ts
 import { Worker } from "bullmq";
 import { redisOptions } from "../config/redis";
-// import { redisOptions } from "./config/redis";
 
 export function runWorker() {
   const worker = new Worker(
     "jobs",
     async (job) => {
       console.log("🔧 Running job:", job.name);
-      // console.log("Job details:", JSON.stringify(job, null, 2));
 
       // Job logic based on jobCode in payload
       const jobCode = job.data.payload.jobCode;
@@ -48,7 +46,7 @@ export function runWorker() {
           console.log("Cleanup case executed");
           break;
         default:
-          console.log("❓ Unknown job code:", jobCode);
+          console.log("❓ Unknown job code:", job.name);
       }
 
       return "done";
@@ -57,7 +55,7 @@ export function runWorker() {
   );
 
   worker.on("completed", (job) => {
-    console.log(`✅ Job completed: ${job.id}`);
+    console.log(`✅ Job completed: ${job.id}, Job Name: ${job.name}`);
   });
 
   worker.on("failed", (job, err) => {

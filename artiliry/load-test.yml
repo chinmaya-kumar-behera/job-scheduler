@@ -1,0 +1,19 @@
+config:
+  target: "http://localhost:3000"
+  phases:
+    - duration: 60
+      arrivalRate: 10
+
+  processor: "./load-test.js"
+
+scenarios:
+  - name: Create Random Jobs
+    flow:
+      - function: generatePayload
+      - post:
+          url: "/jobs"
+          json:
+            name: "{{ jobCode }}-job-{{ $uuid }}"
+            type: "{{ jobCode }}"
+            schedule: "*/1 * * * *"
+            payload: "{{ payload }}"
