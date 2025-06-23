@@ -1,4 +1,3 @@
-// src/api/controllers/job.controller.ts
 import { Request, Response } from "express";
 import { JobService } from "../../services/job.service";
 
@@ -47,4 +46,20 @@ export const getJobById = async (
   }
 
   res.json(job);
+};
+
+export const disableJob = async (req, res) => {
+  const jobId = req.params.id;
+
+  try {
+    const updatedJob = await jobService.disableJobById(jobId);
+
+    return res.status(200).json({
+      message: "Job disabled successfully",
+      job: updatedJob,
+    });
+  } catch (error) {
+    console.error("❌ Failed to disable job", error);
+    return res.status(500).json({ error: "Failed to disable job" });
+  }
 };

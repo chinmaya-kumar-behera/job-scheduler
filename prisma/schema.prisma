@@ -8,14 +8,15 @@ datasource db {
 }
 
 model Job {
-  id             String   @id @default(uuid())
-  name           String
-  type           String 
-  payload        Json
-  schedule       String   // cron format
-  status         String   @default("active")
-  lastRunAt      DateTime?
-  nextRunAt      DateTime?
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  id            String   @id @default(uuid())
+  name          String
+  type          String
+  payload       Json
+  schedule      String   // cron format
+  lastRunAt     DateTime?
+  nextRunAt     DateTime?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  isActive   Boolean  @default(true)
 }
+

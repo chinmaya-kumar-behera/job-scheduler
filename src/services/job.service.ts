@@ -14,7 +14,7 @@ export class JobService {
   async createAndScheduleJob(input: CreateJobInput) {
     const { name, type, payload, schedule } = input;
 
-    // Save to PostgreSQL
+    // Save to PostgreSQL only
     const job = await prisma.job.create({
       data: {
         name,
@@ -27,21 +27,6 @@ export class JobService {
       },
     });
 
-    // Schedule job in BullMQ
-    await jobQueue.add(
-      type,
-      {
-        jobId: job.id,
-        payload,
-      },
-      {
-        repeat: {
-          pattern: schedule, // ✅ correct for older versions (but still fails for type check)
-        },
-        jobId: job.id,
-      }
-    );
-
     return job;
   }
 
@@ -52,4 +37,11 @@ export class JobService {
   async getJobById(id: string) {
     return await prisma.job.findUnique({ where: { id } });
   }
+
+  async disableJobById(jobId: string) {
+    return await prisma.job.update({
+      where: { id: jobId },
+      data: { isActive: false },
+    });
+  };
 }
