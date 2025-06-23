@@ -21,10 +21,16 @@ export class JobService {
         type,
         payload,
         schedule,
-        status: "active",
+        isActive: true,
         nextRunAt: null,
         lastRunAt: null,
       },
+    });
+
+    // 🧠 Enqueue immediately
+    await jobQueue.add(type, {
+      jobId: job.id,
+      payload,
     });
 
     return job;

@@ -1,40 +1,32 @@
-// src/worker/index.ts (refactor worker here if not already)
+// src/worker.ts
 import { Worker } from "bullmq";
 import { redisOptions } from "../config/redis";
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+// import { redisOptions } from "./config/redis";
 
 export function runWorker() {
   const worker = new Worker(
     "jobs",
     async (job) => {
-      console.log(`🛠️  Processing job: ${job.name} | ID: ${job.id}`);
+      console.log("🔧 Running job:", job.name, "with data:", job.data);
 
-      const { jobId, payload } = job.data;
-
-      // Simulate task based on job type
+      // Dummy job logic based on type
       if (job.name === "email") {
-        console.log(`📧 Sending email with data:`, payload);
-        // ... actual logic or mock
+        console.log("📧 Sending email with payload:", job.data.payload);
+        // Imagine sending email here
+      } else {
+        console.log("🔢 Processing job of type:", job.name);
       }
 
-      // Update lastRunAt just in case
-      await prisma.job.update({
-        where: { id: jobId },
-        data: { lastRunAt: new Date() },
-      });
+      return "done";
     },
     { connection: redisOptions }
   );
 
   worker.on("completed", (job) => {
-    console.log(`✅ Job ${job.id} completed`);
+    console.log(`✅ Job completed: ${job.id}`);
   });
 
   worker.on("failed", (job, err) => {
-    console.error(`❌ Job ${job?.id} failed: ${err.message}`);
+    console.error(`❌ Job failed: ${job?.id}`, err);
   });
-
-  console.log("👷 Worker initialized and running...");
 }

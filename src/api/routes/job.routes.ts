@@ -13,6 +13,6 @@ router.post("/", createJob);
 router.get("/", getAllJobs);
 router.get("/:id", getJobById);
 // 👇 NEW ROUTE to disable job
-router.patch("/:id/disable", disableJob);
+// router.patch("/:id/disable", disableJob);
 
 export default router;

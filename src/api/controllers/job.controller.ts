@@ -48,7 +48,7 @@ export const getJobById = async (
   res.json(job);
 };
 
-export const disableJob = async (req, res) => {
+export const disableJob = async (req: Request, res: Response): Promise<Response> => {
   const jobId = req.params.id;
 
   try {
