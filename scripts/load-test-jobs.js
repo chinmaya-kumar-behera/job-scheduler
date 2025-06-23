@@ -45,7 +45,7 @@ async function createJob(name, jobCode, schedule, payload) {
 }
 
 async function runLoadTest() {
-  const totalJobs = 6000;
+  const totalJobs = 100;
   for (let i = 0; i < totalJobs; i++) {
     const jobType = jobTypes[i % jobTypes.length];
     const jobName = `${jobType.jobCode}-job-${i + 1}`;

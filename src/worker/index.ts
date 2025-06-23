@@ -7,8 +7,8 @@ export function runWorker() {
   const worker = new Worker(
     "jobs",
     async (job) => {
-      console.log("🔧 Running job:", job.name, "with data:", job.data);
-      console.log("Job details:", JSON.stringify(job, null, 2));
+      console.log("🔧 Running job:", job.name);
+      // console.log("Job details:", JSON.stringify(job, null, 2));
 
       // Job logic based on jobCode in payload
       const jobCode = job.data.payload.jobCode;
