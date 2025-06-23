@@ -8,6 +8,7 @@ export function runWorker() {
     "jobs",
     async (job) => {
       console.log("🔧 Running job:", job.name, "with data:", job.data);
+      console.log("Job details:", JSON.stringify(job, null, 2));
 
       // Dummy job logic based on type
       if (job.name === "email") {

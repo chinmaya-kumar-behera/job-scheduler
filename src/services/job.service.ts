@@ -27,13 +27,36 @@ export class JobService {
       },
     });
 
-    // 🧠 Enqueue immediately
+    // 🧠 Add repeatable job to BullMQ with cron schedule
     await jobQueue.add(type, {
       jobId: job.id,
       payload,
+    }, {
+      repeat: {
+        cron: schedule as any,
+        tz: "UTC"
+      } as any,
+      jobId: job.id // unique job id to avoid duplicates
     });
 
     return job;
+  }
+
+  async enqueueActiveJobs() {
+    const activeJobs = await prisma.job.findMany({ where: { isActive: true } });
+
+    for (const job of activeJobs) {
+      await jobQueue.add(job.type, {
+        jobId: job.id,
+        payload: job.payload,
+      }, {
+        repeat: {
+          cron: job.schedule as any,
+          tz: "UTC"
+        } as any,
+        jobId: job.id
+      });
+    }
   }
 
   async getAllJobs() {
