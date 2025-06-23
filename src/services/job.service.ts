@@ -44,8 +44,10 @@ export class JobService {
 
   async enqueueActiveJobs() {
     const activeJobs = await prisma.job.findMany({ where: { isActive: true } });
+    console.log("Enqueuing active jobs:", activeJobs.length);
 
     for (const job of activeJobs) {
+      console.log(`Enqueuing job: ${job.name} (ID: ${job.id}) with schedule: ${job.schedule}`);
       await jobQueue.add(job.type, {
         jobId: job.id,
         payload: job.payload,
