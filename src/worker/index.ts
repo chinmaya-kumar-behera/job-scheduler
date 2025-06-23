@@ -7,12 +7,12 @@ export function runWorker() {
   const worker = new Worker(
     "jobs",
     async (job) => {
-      console.log("🔧 Running job:", job.name, "with data:", job.data);
-      console.log("Job details:", JSON.stringify(job, null, 2));
+      // console.log("🔧 Running job:", job.name, "with data:", job.data);
+      // console.log("Job details:", JSON.stringify(job, null, 2));
 
       // Dummy job logic based on type
       if (job.name === "email") {
-        console.log("📧 Sending email with payload:", job.data.payload);
+        console.log("📧 Sending email with payload:", job.data.to);
         // Imagine sending email here
       } else {
         console.log("🔢 Processing job of type:", job.name);
