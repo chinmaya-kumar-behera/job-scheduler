@@ -48,18 +48,21 @@ export const getJobById = async (
   res.json(job);
 };
 
-export const disableJob = async (req: Request, res: Response): Promise<Response> => {
+export const disableJob = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   const jobId = req.params.id;
 
   try {
     const updatedJob = await jobService.disableJobById(jobId);
 
-    return res.status(200).json({
+    res.status(200).json({
       message: "Job disabled successfully",
       job: updatedJob,
     });
   } catch (error) {
     console.error("❌ Failed to disable job", error);
-    return res.status(500).json({ error: "Failed to disable job" });
+    res.status(500).json({ error: "Failed to disable job" });
   }
 };
