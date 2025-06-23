@@ -1,0 +1,21 @@
+config:
+  target: "http://localhost:3000"
+  phases:
+    - duration: 60  # run for 60 seconds
+      arrivalRate: 10  # 10 new users per second
+  defaults:
+    headers:
+      Content-Type: "application/json"
+
+scenarios:
+  - name: "Create job"
+    flow:
+      - post:
+          url: "/jobs"
+          json:
+            name: "Load Test Job"
+            type: "email"
+            payload:
+              to: "testuser@example.com"
+              subject: "Hello from Artillery!"
+            schedule: "*/5 * * * *"  # Every 5 minutes
